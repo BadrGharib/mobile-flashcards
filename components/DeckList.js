@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Platform,FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Platform,FlatList, TouchableOpacity,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { receiveDecks} from '../actions'
 import MetricCard from './Deck'
@@ -43,9 +43,10 @@ import {white, purple, dimGray, gray} from '../utils/colors'
        <View style={{
             borderBottomColor:gray,
             borderBottomWidth:1,
+            width:Dimensions.get('window').width-20,
          }}>
           <TouchableOpacity 
-            style={{marginTop:40}} 
+            style={{marginTop:40,width:Dimensions.get('window').width-20,}} 
             key={item.title} 
             onPress={()=>this.onDeckSelected(item)}
           >
