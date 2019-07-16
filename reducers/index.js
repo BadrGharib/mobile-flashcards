@@ -12,7 +12,10 @@ export default function questions(state={},action){
           debugger;
            return {
                 ...state,
-                [action.deck.id]: action.deck
+                [action.title]: {
+                       title:action.title,
+                       questions:[]
+                     }
            }
         case ADD_CARD:
            debugger

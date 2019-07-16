@@ -19,13 +19,12 @@ export function getDeck (id) {
     return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
-     // data[key] = undefined
       return data[id]
-    //  AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data))
     })
 }
 
 export function saveDeckTitle (title) {
+  debugger;
     return AsyncStorage.mergeItem(FLASHCARD_STORAGE_KEY, JSON.stringify({
         [title]: {
             title:title,

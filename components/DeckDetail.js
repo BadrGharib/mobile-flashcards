@@ -38,14 +38,14 @@ class DeckDetail extends Component {
           </View>
          
           <TouchableOpacity style={styles.btnAddCard} onPress={this.addCard}>
-              <Text>Add Card</Text>
+              <Text style={{fontSize:18}}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStartQuiz} onPress={this.handelStartQuiz}>
-              <Text style={{color:white}}>Start Quiz</Text>
+              <Text style={{color:white,fontSize:18}}>Start Quiz</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnText}>
-              <Text style={{color:red}}>Delete Deck</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity style={styles.btnText}>
+              <Text style={{color:red,fontSize:26}}>Delete Deck</Text>
+          </TouchableOpacity> */}
        </View>
       )
     
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:20
+    marginTop:20,
+    
   },
   btnStartQuiz: {
     backgroundColor: black,

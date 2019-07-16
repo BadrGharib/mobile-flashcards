@@ -12,13 +12,7 @@ import Constants from 'expo-constants'
 import {white,purple} from './utils/colors'
 import {FontAwesome , Ionicons} from '@expo/vector-icons'
 import {createBottomTabNavigator ,createAppContainer , createStackNavigator} from 'react-navigation'
-function CustomStatusBar({backgroundColor,...props}){
-  return(
-    <View style={{backgroundColor,height:Constants.StatusBarHeight}}>
-     <StatusBar translucent backgroundColor={backgroundColor} {...props}/>
-    </View>
-  )
-}
+import {setLocalNotification} from './utils/helper'
 
 const Tabs=createBottomTabNavigator({
   DeckList:{
@@ -32,7 +26,7 @@ const Tabs=createBottomTabNavigator({
   AddDeck:{
     screen:AddDeck,
     navigationOptions:{
-      tabBarLabel:'Add Entry',
+      tabBarLabel:'Add Deck',
       tabBarIcon:({tintColor})=><Ionicons name='ios-add-circle' size={30} color={tintColor}/>,
      
     }
@@ -102,21 +96,29 @@ const MainNavigator=createStackNavigator({
 })
 let MainTabs=createAppContainer(MainNavigator)
 
-export default function App() {
-  return (
-    <Provider store={createStore(reducer)}>
-         {/* <CustomStatusBar backgroundColor={purple} barStyle='light-content'/> */}
-         <MainTabs />
-         
-      </Provider>
-  );
+export default class App extends React.Component {
+  componentDidMount(){
+    debugger;
+    setLocalNotification()
+  }
+  render()
+  {
+    return (
+      <Provider store={createStore(reducer)}>
+          
+           <MainTabs />
+           
+        </Provider>
+    );
+  }
+ 
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });

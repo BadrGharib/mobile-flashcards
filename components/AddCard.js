@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { addCardToDeck} from '../utils/api'
 import { connect } from 'react-redux'
 import { addDeck,addCard } from '../actions'
-import {white, purple,black, dimGray} from '../utils/colors'
+import {white, purple,black, dimGray,lightGray} from '../utils/colors'
 import {NavigationActions} from 'react-navigation'
 
 
@@ -30,9 +30,15 @@ class AddCard extends Component {
       debugger;
     const {id}=this.props
     const {question,answer}=this.state
+    if(question===''||answer==='')
+    {
+        alert('Please make sure to add question and answer before submit')
+        return;
+    }
     addCardToDeck(id,question,answer)
     this.props.dispatch(addCard(id,question,answer))
     this.toBack()
+    this.setState(()=>({question:'',answer:''}))
   }
   toBack=()=>{
       debugger;
@@ -50,7 +56,7 @@ class AddCard extends Component {
           </View>
          
           <TouchableOpacity style={styles.btnSubmit} onPress={this.handelSubmit}>
-              <Text style={{color:white}}>Submit</Text>
+              <Text style={{color:white,fontSize:18}}>Submit</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       )
@@ -64,7 +70,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems:"center",
-    justifyContent:'space-around'
+    justifyContent:'space-around',
+    backgroundColor: lightGray,
   },
   btnSubmit: {
     backgroundColor: black,
@@ -83,7 +90,9 @@ const styles = StyleSheet.create({
       borderWidth:1,
       width:Dimensions.get('window').width-20,
       height:40,
-      margin:10
+      margin:10,
+      paddingLeft:10,
+      fontSize:16
 
   }
 })
