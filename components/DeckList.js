@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Platform,FlatList, TouchableOpacity,Dimensions,Animated} from 'react-native'
+import { View, StyleSheet,FlatList, TouchableOpacity,Dimensions,Animated} from 'react-native'
 import { connect } from 'react-redux'
 import { receiveDecks} from '../actions'
-import MetricCard from './Deck'
 import { AppLoading} from 'expo'
 import {getDecks} from '../utils/api'
 import Deck from './Deck';
-import {white, purple, dimGray, gray,lightGray} from '../utils/colors'
+import {gray,lightGray} from '../utils/colors'
 
  class DeckList extends Component {
   state = {
@@ -16,48 +15,40 @@ import {white, purple, dimGray, gray,lightGray} from '../utils/colors'
   }
   componentDidMount () {
     const { dispatch } = this.props
-    debugger;
-    getDecks()
+    getDecks()//get decks from local storage
       .then((decks) => {
-          debugger;
-          return dispatch(receiveDecks(decks)
+          return dispatch(receiveDecks(decks)//call receiveDecks action
           )})
-      .then(() => this.setState(() => ({ready: true})))
+      .then(() => this.setState(() => ({ready: true})))//set ready to true to hide loading 
   }
   onDeckSelected=(item)=>{
     this.setState(()=>({selected:item.title}))
-      debugger;
       const {opacity}=this.state
-      Animated.timing(opacity,{toValue:0,duration:1000}).start()
+      Animated.timing(opacity,{toValue:0,duration:1000}).start()//start opacity anaimation
      this.props.navigation.navigate('DeckDetail',{id:item.title})
-     Animated.timing(opacity,{toValue:1,duration:1000}).start()
+     Animated.timing(opacity,{toValue:1,duration:1000}).start()//return opacity back to 1
 
   }
+  //render item in flatList
   renderItem=({item})=>{
-      debugger;
       const {opacity,selected}=this.state
     return (
        <View style={styles.containerRenderItem} >
           <TouchableOpacity 
             style={{marginTop:40,width:Dimensions.get('window').width-20}} 
-            onPress={()=>this.onDeckSelected(item)}
-          >
-            <Animated.View  style={selected===item.title &&{opacity}}>
-              <Deck   {...item} />
-            </Animated.View>
-           
+            onPress={()=>this.onDeckSelected(item)}>
+              <Animated.View  style={selected===item.title &&{opacity}}>
+                <Deck   {...item} />
+              </Animated.View>
         </TouchableOpacity>
-      
        </View>
-       
     )
   }
   render() {
-      debugger;
-   const { decks } = this.props
+    const { decks } = this.props
     const { ready } = this.state
 
-    if (ready === false) {
+    if (ready === false) {//Show loading 
       return <AppLoading />
     }
 
@@ -80,11 +71,6 @@ const styles = StyleSheet.create({
      alignItems:"center",
      justifyContent:"center",
      backgroundColor:lightGray
-  },
-  noDataText: {
-    fontSize: 20,
-    paddingTop: 20,
-    paddingBottom: 20
   },
   containerRenderItem:{
     borderBottomColor:gray,

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, KeyboardAvoidingView,TextInput,Dimensions } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import { saveDeckTitle} from '../utils/api'
 import { connect } from 'react-redux'
-import { addDeck,addCard } from '../actions'
-import {white, purple,black, dimGray, lightGray} from '../utils/colors'
-import {NavigationActions} from 'react-navigation'
+import { addDeck } from '../actions'
+import {white,black, dimGray, lightGray} from '../utils/colors'
+
 
 
 class AddDeck extends Component {
+  //show Add Deck in header
     static navigationOptions=()=>{
         return {
             title:'Add Deck'
@@ -23,15 +23,15 @@ class AddDeck extends Component {
     this.setState(()=>({title}))
   }
   handelSubmit=()=>{
-      debugger;
     const {title}=this.state
     if(title==='')
     {
         alert('Please make sure to add deck title before submit')
         return;
     }
-    saveDeckTitle(title)
+    saveDeckTitle(title)//save deck to local storage
     this.props.dispatch(addDeck(title))
+    //navigate to DeckDetail screen
     this.props.navigation.navigate('DeckDetail',{id:title})
     this.setState(()=>({title:''}))
     
@@ -88,13 +88,5 @@ const styles = StyleSheet.create({
 
   }
 })
-
-// function mapStateToProps(state,{navigation}){
-//     debugger;
-//   const {id}=navigation.state.params
-//   return{
-//       id
-//   }
-// }
 
 export default connect()(AddDeck)

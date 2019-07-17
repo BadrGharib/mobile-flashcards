@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native'
-//import { formatCalendarResults, CALENDAR_STORAGE_KEY } from './_calendar'
 export const FLASHCARD_STORAGE_KEY = 'FlashCard:Deck'
 
 export function getDecks () {
@@ -10,16 +9,9 @@ export function getDecks () {
             const decks = JSON.parse(results)
             return decks;
         } 
+        //add initial decks to storage if there are no decks exist
         AsyncStorage.setItem(FLASHCARD_STORAGE_KEY, JSON.stringify(DecksData))
         return DecksData;
-    })
-}
-
-export function getDeck (id) {
-    return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
-    .then((results) => {
-      const data = JSON.parse(results)
-      return data[id]
     })
 }
 
@@ -36,9 +28,7 @@ export function addCardToDeck (title , question, answer) {
   debugger;
     return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
     .then((results) => {
-      const data = JSON.parse(results)
-     // data[key] = undefined
-     // delete data[key]
+     const data = JSON.parse(results)
      const card={
        question:question,
        answer:answer
@@ -50,10 +40,10 @@ export function addCardToDeck (title , question, answer) {
         questions:data[title].questions.concat([card])
         }
       } 
-      //...data[title].questions.concat([card])
       AsyncStorage.setItem(FLASHCARD_STORAGE_KEY, JSON.stringify(newData))
     })
   }
+  //initial Decks
   const DecksData={
     React: {
       title: 'React',

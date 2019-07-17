@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, StyleSheet, KeyboardAvoidingView,TextInput,Dimensions } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { addCardToDeck} from '../utils/api'
+import { View, TouchableOpacity, Text, StyleSheet,Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import { addDeck,addCard } from '../actions'
-import {white, purple,black, dimGray,red,green,lightGray} from '../utils/colors'
+import {white,black, dimGray,red,green,lightGray} from '../utils/colors'
 import {NavigationActions} from 'react-navigation'
 import { AppLoading} from 'expo'
 import {clearLocalNotification,setLocalNotification} from '../utils/helper'
@@ -12,6 +9,7 @@ import {clearLocalNotification,setLocalNotification} from '../utils/helper'
 
 
 class Quiz extends Component {
+    //show Quiz header
     static navigationOptions=({navigation})=>{
         const {id}=navigation.state.params
         return {
@@ -20,10 +18,10 @@ class Quiz extends Component {
 
     }
   state = {
-      showAnswer:false,
-      count:0,
+      showAnswer:false,//toggle between answer and question button
+      count:0,//number of remaining questions
       loading:false,
-      countTrueAnswer:0
+      countTrueAnswer:0//count of true answer
   }
   componentDidMount(){
     debugger;
@@ -32,57 +30,38 @@ class Quiz extends Component {
     this.setState(()=>({count,loading:true}))
     
   }
-  
-//   handelQuestionChange=(question)=>{
-//     this.setState(()=>({question}))
-//   }
-//   handelAnswerChange=(answer)=>{
-//     this.setState(()=>({answer}))
-//   }
-//   handelSubmit=()=>{
-//       debugger;
-//     const {id}=this.props
-//     const {question,answer}=this.state
-//     addCardToDeck(id,question,answer)
-//     this.props.dispatch(addCard(id,question,answer))
-//     this.toBack()
-//   }
- 
+  //toggle between question and answer button
   handelToggleQA=()=>{
       this.setState((currentState)=>({showAnswer:!currentState.showAnswer}))
   }
   handelCorect=()=>{
-      debugger;
     this.setState((currentState)=>({
         count:currentState.count-1,
         countTrueAnswer:currentState.countTrueAnswer+1,
         showAnswer:false
     }))
-    debugger;
-    this.setNextNotification()
+    if(this.state.count-1===0)
+    {
+      this.setNextNotification()
+    }
   }
   handelInCorrect=()=>{
-      debugger;
     this.setState((currentState)=>({
         count:currentState.count-1,
         showAnswer:false
     }))
-    debugger;
-    this.setNextNotification()
+    if(this.state.count-1===0)
+    {
+      this.setNextNotification()
+    }
    
   }
-  setNextNotification=()=>{
-      debugger;
+  setNextNotification=()=>{//set next notification time
       const {count}=this.state
-      if(count-1===0)
-      {
-        clearLocalNotification()
+      clearLocalNotification()
         .then(()=>{
-            debugger;
             setLocalNotification()
             } )
-      }
-   
   }
   handelRestartQuiz=()=>{
     const {deck}=this.props
@@ -95,29 +74,25 @@ class Quiz extends Component {
 
   }
   handelBackToDeck=()=>{
-    debugger;
     const {deck}=this.props
     this.props.navigation.dispatch(NavigationActions.back(deck.title))
    }
   
   render(){
-      debugger;
-      //if()
+      
       const {count,loading,countTrueAnswer,showAnswer}=this.state
       if(!loading)
           return <AppLoading/>;
       const {deck}=this.props
       const totalCount=deck.questions.length
-      if(totalCount === 0)
+      if(totalCount === 0)// check if the dec have no cards
       {
           return <View style={styles.center}>
               <Text style={{fontSize:30,textAlign:'center'}}>Sorry, you can't start a quiz because there are no cards in the deck</Text>
           </View>
       }
-      if(count === 0)
+      if(count === 0)//check if this the last question to show the score
       {
-
-         
         return ( 
           <View style={styles.container}>
               <View>
@@ -131,45 +106,40 @@ class Quiz extends Component {
                 }
               </View>
               <View>
-              <TouchableOpacity style={styles.btnRestartQuiz} onPress={this.handelRestartQuiz}>
+                <TouchableOpacity style={styles.btnRestartQuiz} onPress={this.handelRestartQuiz}>
                     <Text style={{color:white,fontSize:18}}>Restart Quiz</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btnGoBack} onPress={this.handelBackToDeck}>
-                <Text style={{fontSize:18}}>Back to Deck</Text>
+                    <Text style={{fontSize:18}}>Back to Deck</Text>
                 </TouchableOpacity>
-                
-              </View>
-             
+              </View>  
           </View>
-        )
-         
+        )  
       }
-debugger;
       return(
-          
         <View style={styles.container}>
           <Text style={{alignSelf:'flex-start',marginLeft:15,fontSize:22}}>{count}/{totalCount}</Text>
           <View>
-          <Text  style={{fontSize:36}}>
-             {
-               showAnswer===true
-               ?
-               deck.questions[count-1].answer
-               :
-               deck.questions[count-1].question
-             }
-          </Text>
-          <TouchableOpacity style={styles.btnText} onPress={this.handelToggleQA}>
-              <Text style={{color:red,fontSize:18,textAlign:'center'}}>
+            <Text  style={{fontSize:36}}>
                 {
-                showAnswer===true
+                showAnswer===true//show question or answer titles
                 ?
-                'Question'
+                deck.questions[count-1].answer
                 :
-                'Answer'
+                deck.questions[count-1].question
                 }
-              </Text>
-          </TouchableOpacity>
+            </Text>
+            <TouchableOpacity style={styles.btnText} onPress={this.handelToggleQA}>
+                <Text style={{color:red,fontSize:18,textAlign:'center'}}>
+                    {
+                    showAnswer===true//show question or answer button
+                    ?
+                    ' Show Question'
+                    :
+                    'Show Answer'
+                    }
+                </Text>
+            </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity style={styles.btnCorrect} onPress={this.handelCorect}>
@@ -182,10 +152,7 @@ debugger;
          
         </View>
       )
-    
   }
-    
-   
 }
 
 const styles = StyleSheet.create({
@@ -202,7 +169,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:white,
-   // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20
@@ -214,7 +180,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:white,
-   // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20
@@ -226,7 +191,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:black,
-    // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20,
@@ -239,18 +203,9 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:white,
-    // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20
-  },
-  txt:{
-      borderColor:dimGray,
-      borderWidth:1,
-      width:Dimensions.get('window').width-20,
-      height:40,
-      margin:10
-
   },
   btnText: {
     fontSize: 22,

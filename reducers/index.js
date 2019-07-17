@@ -1,6 +1,6 @@
 import {RECEIVE_DECKS,ADD_DECK,ADD_CARD} from '../actions'
 
-export default function questions(state={},action){
+export default function decks(state={},action){
     switch(action.type){
         case RECEIVE_DECKS:
             debugger;

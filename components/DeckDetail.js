@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
-import { View, TouchableOpacity, Text, StyleSheet, Platform } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { saveDeckTitle} from '../utils/api'
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { addDeck } from '../actions'
-// import {NavigationAction, NavigationActions} from 'react-navigation'
-import {white, purple,gray,red,black,lightGray} from '../utils/colors'
+import {white,black,lightGray} from '../utils/colors'
 import Deck from './Deck'
 
 class DeckDetail extends Component {
-
-  state = {
-  }
+  //show deck title in header
   static navigationOptions=({navigation})=>{
         const {id}=navigation.state.params
         return {
@@ -34,24 +28,17 @@ class DeckDetail extends Component {
       return(
         <View style={styles.container}>
           <View style={{height:200}}>
-            <Deck {...deck} />
+             <Deck {...deck} />
           </View>
-         
           <TouchableOpacity style={styles.btnAddCard} onPress={this.addCard}>
               <Text style={{fontSize:18}}>Add Card</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStartQuiz} onPress={this.handelStartQuiz}>
               <Text style={{color:white,fontSize:18}}>Start Quiz</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.btnText}>
-              <Text style={{color:red,fontSize:26}}>Delete Deck</Text>
-          </TouchableOpacity> */}
        </View>
       )
-    
   }
-    
-   
 }
 
 const styles = StyleSheet.create({
@@ -62,11 +49,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'flex-start'
   },
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent:'center'
-  },
   btnAddCard: {
     backgroundColor: white,
     height: 45,
@@ -74,7 +56,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:black,
-    // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:20,
@@ -87,21 +68,15 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth:2,
     borderColor:white,
-    // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:20
-  },
-  btnText: {
-    fontSize: 22,
-    textAlign: 'center',
     marginTop:20
   },
 })
 
 function mapStateToProps(state,{navigation}){
     debugger;
-  const {id}=navigation.state.params
+  const {id}=navigation.state.params//get deck title from navigation
   return{
       deck:state[id]
   }

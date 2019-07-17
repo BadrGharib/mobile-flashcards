@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, KeyboardAvoidingView,TextInput,Dimensions } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import { addCardToDeck} from '../utils/api'
 import { connect } from 'react-redux'
-import { addDeck,addCard } from '../actions'
-import {white, purple,black, dimGray,lightGray} from '../utils/colors'
+import { addCard } from '../actions'
+import {white, black, dimGray,lightGray} from '../utils/colors'
 import {NavigationActions} from 'react-navigation'
 
 
 class AddCard extends Component {
+    //to render deck title and add card in header
     static navigationOptions=({navigation})=>{
         const {id}=navigation.state.params
         return {
             title:id +'       Add Card'
         }
-
     }
   state = {
       question:'',
@@ -27,21 +26,22 @@ class AddCard extends Component {
     this.setState(()=>({answer}))
   }
   handelSubmit=()=>{
-      debugger;
     const {id}=this.props
     const {question,answer}=this.state
-    if(question===''||answer==='')
+    if(question===''||answer==='')//check if question or answer is empty
     {
         alert('Please make sure to add question and answer before submit')
         return;
     }
+    //save card in local storage
     addCardToDeck(id,question,answer)
+    //call addCard redux actions
     this.props.dispatch(addCard(id,question,answer))
+    //return to previous screen deck screen
     this.toBack()
     this.setState(()=>({question:'',answer:''}))
   }
   toBack=()=>{
-      debugger;
     const {id}=this.props
     this.props.navigation.dispatch(NavigationActions.back(id))
   }

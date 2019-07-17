@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import DeckList from './components/DeckList'
 import AddDeck from './components/AddDeck'
 import DeckDetail from './components/DeckDetail'
@@ -8,12 +7,12 @@ import Quiz from './components/Quiz'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducer from './reducers'
-import Constants from 'expo-constants'
 import {white,purple} from './utils/colors'
-import {FontAwesome , Ionicons} from '@expo/vector-icons'
+import {Ionicons} from '@expo/vector-icons'
 import {createBottomTabNavigator ,createAppContainer , createStackNavigator} from 'react-navigation'
 import {setLocalNotification} from './utils/helper'
 
+//create Decks and Add Deck Tabs
 const Tabs=createBottomTabNavigator({
   DeckList:{
     screen:DeckList,
@@ -53,6 +52,7 @@ const Tabs=createBottomTabNavigator({
   }
 })
 
+//create stack navigatoe for deck details , add card and quiz
 const MainNavigator=createStackNavigator({
  Home:{
    screen:Tabs,
@@ -98,27 +98,15 @@ let MainTabs=createAppContainer(MainNavigator)
 
 export default class App extends React.Component {
   componentDidMount(){
-    debugger;
-    setLocalNotification()
+    setLocalNotification()//initiat notification
   }
   render()
   {
     return (
       <Provider store={createStore(reducer)}>
-          
            <MainTabs />
-           
         </Provider>
     );
   }
  
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
